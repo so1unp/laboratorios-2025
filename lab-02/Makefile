@@ -23,7 +23,7 @@ clean:
 	rm -f $(LIST)
 
 zip:
-	git archive --format zip --output ${USER}-lab02.zip master
+	git archive --format zip --output ${USER}-lab02.zip HEAD
 
 html:
 	pandoc -o README.html -f gfm README.md
