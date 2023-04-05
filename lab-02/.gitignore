@@ -60,6 +60,9 @@ dkms.conf
 *.htm
 *.html
 
+# zip
+*.zip
+
 # Binarios de los ejercicios
 bin/*
 !bin/.keep
