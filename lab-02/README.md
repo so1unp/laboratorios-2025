@@ -33,7 +33,7 @@ Implementar la ejecución de comandos. El programa genera una estructura `execcm
 
 Implementar redirección de E/S mediante los operadores `<` y `>`, de manera que el shell permita ejecutar comandos como:
 
-```
+```console
 $ echo "sistemas operativos" > so.txt
 $ cat < so.txt
 sistemas operativos
