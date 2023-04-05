@@ -29,7 +29,7 @@ El programa `sh.c` es un interprete de comandos (_shell_) que no tiene implement
 
 ### 2.1: Ejecución de comandos
 
-Implementar la ejecución de comandos. El programa genera una estructura `execcmd` que contiene el comando a ejecutar y sus parámetros (si los hubiera). Para implementar la ejecución de comandos, deben completar el caso `' '` en la función `runcmd()`, utilizando la llamada a sistema [`exec()`](http://man7.org/linux/man-pages/man3/exec.3.html). Se debe imprimir un mensaje de error si `exec()` falla, utilizando la función [`perror()`](http://man7.org/linux/man-pages/man3/perror.3.html).
+Implementar la ejecución de comandos. El programa genera una estructura `execcmd` que contiene el comando a ejecutar y sus parámetros (si los hubiera). Para implementar la ejecución de comandos, deben completar el caso `EXEC` en la función `runcmd()`, utilizando la llamada a sistema [`exec()`](http://man7.org/linux/man-pages/man3/exec.3.html). Se debe imprimir un mensaje de error si `exec()` falla, utilizando la función [`perror()`](http://man7.org/linux/man-pages/man3/perror.3.html).
 
 ### 2.2: Redirección de E/S
 
@@ -42,7 +42,7 @@ sistemas operativos
 $
 ```
 
-El parser implementado en el _shell_ ya reconoce estos operadores y genera una estructura `redircmd` con los datos necesarios para implementar la redirección. Deben completar el código necesario en la función `runcmd()`. Consultar las llamadas al sistema [`open()`](http://man7.org/linux/man-pages/man2/open.2.html) y [`close()`](http://man7.org/linux/man-pages/man2/close.2.html). Imprimir un mensaje de error si alguna de las llamadas al sistema, utilizando [`perror()`](http://man7.org/linux/man-pages/man3/perror.3.html). Verificar los permisos con los que se crea el archivo.
+El parser implementado en el _shell_ ya reconoce estos operadores y genera una estructura `redircmd` con los datos necesarios para implementar la redirección. Deben completar el código necesario en el caso `REDIR` de la función `runcmd()`. Consultar las llamadas al sistema [`open()`](http://man7.org/linux/man-pages/man2/open.2.html) y [`close()`](http://man7.org/linux/man-pages/man2/close.2.html). Imprimir un mensaje de error si alguna de las llamadas al sistema, utilizando [`perror()`](http://man7.org/linux/man-pages/man3/perror.3.html). Verificar los permisos con los que se crea el archivo.
 
 ## Ejercicio 3 - Shell de xv6
 
