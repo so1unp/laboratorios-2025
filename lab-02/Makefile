@@ -22,7 +22,7 @@ test:
 clean:
 	rm -f $(LIST)
 
-dist:
+zip:
 	git archive --format zip --output ${USER}-lab02.zip master
 
 html:
