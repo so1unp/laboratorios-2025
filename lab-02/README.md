@@ -67,7 +67,7 @@ Implementar la ejecución de comandos y la redirección de entrada/salida, usand
 
 ## Ejercicio 4 - Traza de llamadas al sistema
 
-El programa `trace.c` activa o desactiva la traza de llamadas al sistema. Al pasarle `1` como parámetro, activa la traza. Para desactivarla, se utiliza el parámetro `0`. Por ejemplo, al ejecutar `trace` deberían tener una salida similar a la siguiente:
+El programa `trace.c` en _xv6_ activa o desactiva la traza de llamadas al sistema. Al pasarle `1` como parámetro, activa la traza. Para desactivarla, se utiliza el parámetro `0`. Por ejemplo, al ejecutar `trace` deberían tener una salida similar a la siguiente:
 ```console
 $ trace 1
 [27] sys_sctrace: 0
