@@ -1,0 +1,76 @@
+<h1 id="laboratorio-3---procesos-y-señales">Laboratorio 3 - Procesos y señales</h1>
+<h2 id="ejercicio-1">Ejercicio 1</h2>
+<p>Una señal es una notificación enviada a un proceso de que ocurrió un evento. Son análogas a una interrupción de hardware e interrumpen el normal funcionamiento del programa. Las señales pueden ser generadas por el kernel para indicar que ocurrió una excepción de hardware, que el usuario tecleo una combinación especial de carácteres (por ejemplo <code>^C</code>) o que ocurrio un evento de software (por ejemplo, un proceso hijo finalizó su ejecución). Un programa puede enviar señales a otros procesos o a si mismo. Una lista completa de las señales se puede consultar en <a href="https://man7.org/linux/man-pages/man7/signal.7.html"><code>signals</code></a>.</p>
+<p>En este ejercicio vamos a practicar como tratar las señales que llegan a un proceso. Por defecto, la acción que se ejecuta al llegar una señal es la de finalizar el proceso (en la mayoría de los casos) o ignorar la señal.</p>
+<p>Completar el programas <code>sig_receiver.c</code> de manera que espere por la recepción de señales. Por cada señal que recibe, debe imprimir el identificador de la señal y una descripción de la misma.</p>
+<p>Para enviar señales a <code>sig_receiver.c</code> vamos a utilizar el comando <a href="http://man7.org/linux/man-pages/man1/kill.1.html"><code>kill</code></a>. Por ejemplo, para enviar las señales 15 (<code>SIGTERM</code>) y 8 (<code>SIGFPE</code>):</p>
+<pre><code>$ bin/sig_receiver &amp;
+[1] 27309
+$ kill -15 27309 
+15: Terminated
+$ kill -8 27309
+8: Floating point exception
+$</code></pre>
+<p>Utilizar las siguientes funciones y llamadas al sistema:</p>
+<ul>
+<li><a href="http://man7.org/linux/man-pages/man2/sigaction.2.html"><code>sigaction()</code></a>: permite cambiar la acción tomada por el proceso al recibir una señal.</li>
+<li><a href="http://man7.org/linux/man-pages/man2/pause.2.html"><code>pause()</code></a>: espera a recibir una señal.</li>
+<li><a href="http://man7.org/linux/man-pages/man3/strsignal.3.html"><code>strsignal()</code></a>: retorna un puntero a una cadena con la descripción de la señal indicada.</li>
+<li>El archivo de cabecera <code>signal.h</code> incluye la constante <code>NSIG</code> que es igual al número de señales del sistema más uno.</li>
+</ul>
+<p>Responder:</p>
+<ol type="1">
+<li>¿Cuáles son las señales que no es posible atrapar? ¿Por qué?</li>
+</ol>
+<h2 id="ejercicio-2">Ejercicio 2</h2>
+<p>El programa <code>forkprio.c</code> debe crear un cierto número de procesos hijos, reduciendo progresivamente el valor de prioridad de cada uno. Pasado un cierto número de segundos, debe envíar una señal de terminación (<code>SIGTERM</code>) a todos sus hijos. Estos, antes de terminar su ejecución, deben imprimir su PID, prioridad y el número de segundos que ejecutaron.</p>
+<p>El siguiente esquema muestra como es la relación con los procesos hijos:</p>
+<pre><code>      ┌──────────┐                             fork()
+      │ forkprio ├───────────┬───────────┬────────────────────┐
+      └─────┬────┘           │           │                    │
+            │                │           │                    │
+            │                │           │                    │
+ sleep(secs)│           ┌────▼───┐   ┌───▼────┐          ┌────▼───┐
+            .           │ Hijo 1 │   │ Hijo 2 │   ...    │ Hijo n │
+            .           └────▲───┘   └───▲────┘          └────▲───┘
+            .                │           │                    │
+            │                │           │                    │
+            │                │           │                    │
+            ├────────────────┴───────────┴────────────────────┘
+            │                                 kill(SIGTERM)
+            │
+            ▼
+          exit()</code></pre>
+<p>Requisitos:</p>
+<ul>
+<li>El primer argumento en la linea de comandos debe ser el número de procesos hijos a crear. El segundo parámetro el número de segundos que deben ejecutar. El tercer parámetro indica si se reducen las prioridades (1) o no (0).</li>
+<li>Si el número de segundos es 0 (cero) se debe ejecutar indefinidamente.</li>
+<li>El formato que deben utilizar los procesos hijos al imprimir es <code>"Child %d (nice %2d):\t%3li\n"</code> (pid, prioridad, tiempo de ejecución).</li>
+<li>La función <code>busywork()</code> en el archivo <code>forkprio.c</code> tiene un bucle infinito que repetidamente invoca la función <code>times()</code> para consumir tiempo de CPU. Es la función que deben invocar los procesos hijos.</li>
+</ul>
+<p>Utilizar las siguientes llamadas al sistema:</p>
+<ul>
+<li><a href="https://man7.org/linux/man-pages/man2/setpriority.2.html"><code>setpriority()</code></a>: cambia la prioridad de un proceso (también se puede utilizar <a href="https://man7.org/linux/man-pages/man2/nice.2.html"><code>nice()</code></a>).</li>
+<li><a href="https://man7.org/linux/man-pages/man2/setpriority.2.html"><code>getpriority()</code></a>: retorna el valor de prioridad un proceso.</li>
+<li><a href="https://man7.org/linux/man-pages/man2/getrusage.2.html"><code>getrusage()</code></a>: obtiene estadísticas de ejecución de un proceso.</li>
+<li><a href="https://man7.org/linux/man-pages/man3/sleep.3.html"><code>sleep()</code></a>: suspende la ejecución de un proceso durante el número indicado de segundos.</li>
+<li><a href="http://man7.org/linux/man-pages/man2/kill.2.html"><code>kill()</code></a>: envía una señal a un proceso.</li>
+<li><a href="http://man7.org/linux/man-pages/man2/sigaction.2.html"><code>sigaction()</code></a>: permite modificar la acción a ejecutar al recibir una señal.</li>
+</ul>
+<p>Para verificar que efectivamente se estan creando los procesos hijos, pueden realizar la siguiente prueba:</p>
+<pre class="console"><code>$ bin/forkprio 5 0 0 &gt;/dev/null &amp;
+$ pstree -cp $(pgrep forkprio | head -1)
+$ pkill forkprio</code></pre>
+<p>Responder:</p>
+<ol type="1">
+<li>Ejecutar <code>bin/forkprio 1 0 1 &gt;/dev/null &amp;</code>. Luego ejecutar el comando <code>ps -fp $(pgrep forkprio)</code>. ¿En que estados están los procesos? Explicar.</li>
+<li>Ejecutar <code>bin/forkprio 1 10 1</code> en tu computadora y luego en el servidor de la cátedra ¿Existe alguna diferencia en el resultado? Ejecutar múltiples veces para estar seguro de los resultados.</li>
+<li>Ejecutar <code>bin/forkprio 10 30 1 | sort -k 4 -h</code> y describir el resultado de la ejecución. ¿Por qué el total del tiempo ejecutado por los procesos hijos puede ser mayor que el tiempo que espera el proceso padre?</li>
+<li>Si el comando anterior se ejecuta indicando que no se cambien las prioridades de los procesos hijos, ¿Cúal es el resultado? Explicar por qué.</li>
+</ol>
+<h2 id="ejercicio-3-getppid-en-xv6">Ejercicio 3: getppid() en xv6</h2>
+<p>Añadir a <em>xv6</em> la llamada al sistema <code>getppid()</code>, para obtener el PID del proceso padre. Utilizar como guía la llamada al sistema <code>getpid()</code>. Agregar también un programa de nombre <code>testppid.c</code> que pruebe el funcionamiento de la nueva llamada al sistema.</p>
+<h2 id="ejercicio-4-contador-de-procesos-en-xv6">Ejercicio 4: contador de procesos en xv6</h2>
+<p>Añadir a <em>xv6</em> la llamada al sistema <code>pscnt()</code>, que retorne el número de procesos actualmente el sistema. El prototipo de la función para el usuario es: <code>int pscnt(void)</code>. Añadir un programa de nombre <code>pscnt.c</code> para pruebe el funcionamiento de esta llamada al sistema creando procesos hijos.</p>
+<hr />
+<p>¡Fin del Laboratorio 3!</p>
