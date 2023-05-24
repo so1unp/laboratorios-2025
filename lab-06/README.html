@@ -52,6 +52,7 @@
 <li><p>¿Qué tipo de política de planificación de disco se utiliza?</p></li>
 <li><p>¿Se emplea DMA o la operación de E/S es administrada totalmente por el SO?</p></li>
 <li><p>¿Por que la función <code>idewait()</code> realiza un <code>polling</code>?</p></li>
+<li><p>Opcional: agregar la llamada al sistema <code>int rblk(int device, int nblock, char *buf)</code> que permita leer el contenido del sector de disco indicado. Probar la llamada al sistema usando el programa <code>rblk.c</code>, leyendo los primeros bytes de alguno de los bloques de datos generados por la ejecución de <code>testwrite.c</code>.</p></li>
 </ol>
 <hr />
 <p>¡Fin del Laboratorio!</p>

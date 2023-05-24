@@ -62,6 +62,8 @@ Copiar el programa `testwrite.c` en el directorio de _xv6_ y agregarlo en el arr
 
 6. ¿Por que la función `idewait()` realiza un `polling`?
 
+7. Opcional: agregar la llamada al sistema `int rblk(int device, int nblock, char *buf)` que permita leer el contenido del sector de disco indicado. Probar la llamada al sistema usando el programa `rblk.c`, leyendo los primeros bytes de alguno de los bloques de datos generados por la ejecución de `testwrite.c`.
+
 ---
 
 ¡Fin del Laboratorio!
