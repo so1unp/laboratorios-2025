@@ -1,0 +1,57 @@
+<h1 id="laboratorio-6---entrada--salida">Laboratorio 6 - Entrada / Salida</h1>
+<h2 id="ejercicio-1-interrupción-del-teclado">Ejercicio 1: Interrupción del teclado</h2>
+<p>Cuando ejecutamos <em>xv6</em> utilizando el comando <code>make qemu-nox</code>, se emula una conexión por medio de una terminal serial (ver Terminales en las filminas de teoría). Al presionar una tecla, se genera una interrupción en la interfaz UART. Para presentar un caracter por pantalla se envía por la misma interfaz.</p>
+<ol>
+<li><p>Describir el proceso de E/S en <em>xv6</em> cuando el usuario presiona una tecla del teclado. ¿Se utilizan comandos específicos de E/S o se utiliza E/S mapeada en memoria?</p></li>
+<li><p>Cuando se presiona una tecla, ¿El caracter es inmediatamente enviado al proceso que este leyendo de la entrada estándar? Justificar.</p></li>
+</ol>
+<h2 id="ejercicio-2-comunicación-por-la-pantalla">Ejercicio 2: Comunicación por la pantalla.</h2>
+<p>Para simular la salida por un monitor conectado a la tarjeta de vídeo en la PC, hay que ejecutar <em>xv6</em> utilizando el comando <code>make -qemu</code> (sin el <code>-nox</code>).</p>
+<p>La función <code>cgaputc()</code> escribe el carácter que recibe como parámetro en la memoria de video en modo texto de un adaptador de vídeo CGA. El archivo <code>cga.pdf</code> es el manual de referencia de este adaptador.</p>
+<p>Se utilizan los siguientes datos:</p>
+<ul>
+<li><code>CRTPORT</code> es un <code>#define</code> con el valor <code>0x3D4</code>, que es la <strong>dirección</strong> del puerto de comandos de la controladora de vídeo en el espacio de direcciones de E/S.</li>
+<li>La variable <code>*crt</code> es un puntero a la <strong>memoria de video en modo texto</strong>, mapeada en la dirección <code>0xB8000</code>. La memoria de vídeo es un arreglo de 4000 bytes que representa una grilla de 80 columnas y 25 filas. Cada carácter requiere 2 bytes, el primero indica el color de la fuente y fondo, mientras que el segundo es el código ASCII.</li>
+<li>La posición del cursor es almacenada por la controladora de vídeo en los registros <em>Cursor Location High Register</em> y <em>Cursor Location Low Register</em> (ver archivo <code>cga.txt</code>).</li>
+</ul>
+<p>La función <code>cgaputc()</code> realiza las siguientes acciones:</p>
+<ol>
+<li>Obtiene la posición del cursor y lo almacena en la variable <code>pos</code>.</li>
+<li>Si el caracter a mostrar es un <code>\n</code> o un <code>BACKSPACE</code> actualiza la variable <code>pos</code>, que almancena la posición del cursor.</li>
+<li>En cambio, si el carácter es imprimible, lo escribe en la memoria de vídeo en la posición correspondiente.</li>
+<li>Comprueba que la nueva posición del cursor este dentro de los límites de la pantalla.</li>
+<li>Realiza el <em>scroll</em> (desplazamiento) de la pantalla si corresponde.</li>
+<li>Actualiza el cursor hardware con la nueva posición.</li>
+</ol>
+<p>Responder:</p>
+<ol>
+<li>Agregar comentarios en el código de la función <code>cgaputc()</code> que indiquen si una operación de E/S es mapeada en memoria o utilizar registros especiales de E/S.</li>
+<li>Modificar <code>cgaput.c</code> para cambiar el color con que el que se imprimen los caracteres por pantalla. Probar también cambiar el color de fondo. Ver la sección <em>Alphanumeric Modes</em> (pag. 10) en la documentación CGA (recordar que Intel usa <em>little-endian</em>).</li>
+</ol>
+<h2 id="ejercicio-3-disco">Ejercicio 3: Disco</h2>
+<p>En este ejercicio vamos a estudiar como funciona el <em>driver</em> de disco y el sistema de E/S de <em>xv6</em>. Usen de referencia el documento <em>xv6-ide.pdf</em> que describe la E/S de disco en <em>xv6</em>.</p>
+<p>En <em>xv6</em> el disco se organiza de la siguiente manera (ver archivos <code>fs.h</code> y <code>mkfs.c</code>):</p>
+<pre><code> ┌──────┬─────────────┬─────┬─────────┬──────┬──────┐
+ │ boot │ super-block │ log │ i-nodes │ free │ data │
+ └──────┴─────────────┴─────┴─────────┴──────┴──────┘
+</code></pre>
+<p>Donde:</p>
+<ul>
+<li><em>boot</em>: sector con información para el inicio del sistema.</li>
+<li><em>super-block</em>: super bloque del sistema de archivos.</li>
+<li><em>log</em>: conjunto de sectores destinado a realizar <em>journaling</em> del sistema de archivos. Los ignoraremos por el momento.</li>
+<li><em>inodes</em>: sectores que almacenan información de los archivos.</li>
+<li><em>free</em>: sector que contiene informacion de los sectores libres.</li>
+<li><em>data</em>: sectores que contienen los datos de los archivos y directorios.</li>
+</ul>
+<p>Copiar el programa <code>testwrite.c</code> en el directorio de <em>xv6</em> y agregarlo en el arreglo <code>UPROGS</code> del <code>Makefile</code>. Modificar el archivo <code>ide.c</code> para que imprima por pantalla el número de sector de disco que se esta modificando, ignorando los sectores menores a 32. Una vez realizada la modificación:</p>
+<ol>
+<li><p>Iniciar <em>xv6</em> utilizando <code>make clean &amp;&amp; make qemu-nox</code> (de manera que se genere de nuevo la imagen del disco duro) y ejecutar nuevamente <code>testwrite</code>. ¿Qué sectores de disco se están modificando? ¿Cuantos son los sectores que contienen el contenido del archivo generado? Justificar el número.</p></li>
+<li><p>Sin reiniciar <em>xv6</em>, ejecutar nuevamente <code>testwrite</code>. ¿Qué diferencia hay en la lista de sectores modificados? Justificar.</p></li>
+<li><p>Resumir el ciclo de vida del requerimiento de E/S de <code>testwrite.c</code>, explicando las llamadas al sistema utilizadas, que interrupciones ocurren y la secuencia de funciones invocadas por el <em>kernel</em>.</p></li>
+<li><p>¿Qué tipo de política de planificación de disco se utiliza?</p></li>
+<li><p>¿Se emplea DMA o la operación de E/S es administrada totalmente por el SO?</p></li>
+<li><p>¿Por que la función <code>idewait()</code> realiza un <code>polling</code>?</p></li>
+</ol>
+<hr />
+<p>¡Fin del Laboratorio!</p>
