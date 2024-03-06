@@ -3,9 +3,9 @@
 El objetivo de este laboratorio es familiarizarse con el lenguaje C y las herramientas de desarrollo. Como editor de texto se utilizará VSCode y se empleará el compilador desde la línea de comandos.  Para el control de versiones se empleará [Git](https://git-scm.com/) y GitHub para administrar los repositorios remotos. [Aquí](http://rogerdudler.github.io/git-guide/index.es.html) pueden leer una guía sencilla para aprender los comandos básicos de Git.
 
 ### Compilación
-Para compilar los programas vamos a utilizar el comando `make`. Si se ejecuta sin parámetros, compila _todos_ los programas del laboratorio. Si se indica el nombre de un archivo _sin la extensión_ compila sólo dicho programa.
+Para compilar los programas vamos a utilizar el comando `make`. Si se ejecuta sin parámetros, compila _todos_ los programas del laboratorio. Si se indica el nombre de un archivo _sin la extensión_ compila sólo el programa indicado.
 
-Por ejemplo, para compilar el ejercicio 1:
+Por ejemplo, para compilar el ejercicio 1 (programa `sum.c`):
 ```
 $ make sum
 gcc -g -Wall -Wextra -Wshadow -Wconversion -Wunreachable-code -o ./bin/sum sum.c
@@ -19,7 +19,7 @@ sum.c:4:26: warning: unused parameter ‘argv’ [-Wunused-parameter]
 $
 ```
 
-El compilador genera una serie de _warnings_ (advertencias). En este caso, nos está indicando que los parámetros `argc` y `argv` de la función `main()` no estan siendo utilizados (`unused parameter`). El objetivo es que los programas pedidos en cada ejercicio no sólo cumplan con el enunciado sino que _además_ se compilen *sin advertencias*.
+El compilador genera una serie de _warnings_ (advertencias). En este caso, nos está indicando que los parámetros `argc` y `argv` de la función `main()` no estan siendo utilizados (`unused parameter`). El objetivo es que la resolución de cada ejercicio cumpla con el enunciado y que _además_ compile *sin advertencias*.
 
 El ejecutable se crea dentro del subdirectorio `bin` del laboratorio. Lo podemos comprobar haciendo un listado del contenido de dicho directorio:
 ```
@@ -35,7 +35,7 @@ $
 Como todavía no se realizó una modifación al programa, no realiza ninguna acción.
 
 ## Ejercicio 0
-El programa `democ.c` es una demostración de las funcionalidades básicas del lenguaje C: declaración de variables, estructuras, ciclos, control, punteros e imprimir mensajes por la salida estándar haciendo uso de funciones de la biblioteca. Leer el código, compilar el programa y ejecutarlo.
+El programa `demo.c` es una demostración de las funcionalidades básicas del lenguaje C: declaración de variables, estructuras, ciclos, control, punteros e imprimir mensajes por la salida estándar haciendo uso de funciones de la biblioteca. Leer el código, compilar el programa y ejecutarlo.
 
 ## Ejercicio 1
 Completar el programa `hola.c` para que imprima por la salida estandar el mensaje indicado como parámetro. Utilizar la función [`printf()`](https://www.man7.org/linux/man-pages/man3/printf.3.html) para imprimir el mensaje. Un ejemplo de ejecución es:

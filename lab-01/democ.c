@@ -23,8 +23,8 @@ int buffer[2048];
 
 /*
  * Definición de una función:
- * - Retorna un entero.
  * - Require un entero como parámetro.
+ * - Retorna un entero.
  */
 int cuadrado(int x)
 {
