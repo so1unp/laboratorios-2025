@@ -56,7 +56,9 @@ Para crear un buzón de mensajes, enviar y recibir mensajes, usar las siguientes
 * [`mq_unlink()`](http://man7.org/linux/man-pages/man3/mq_unlink.3.html): elimina una cola de mensajes.
 * [`getlogin_r`](https://www.man7.org/linux/man-pages/man3/getlogin.3.html): obtiene el nombre del usuario.
 
-Una vez completado el programa, deben poder crear colas de mensajes y envíar y recibir mensajes por medio de las mismas utilizando el comando `./msgbox`.
+Una vez completado el programa, deben poder crear colas de mensajes y envíar y recibir mensajes por medio de las mismas utilizando el comando `bin/msg`:
+
+![Ejemplo de uso de Msg](stuff/msgbox.gif)
 
 ## Ejercicio 3: canvas usando memoria compartida
 
