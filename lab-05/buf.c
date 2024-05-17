@@ -54,7 +54,8 @@ static void* consumer(void *p)
     for (i = 0; i < params->items; i++) {
         reader_results[i] = params->buf->buf[i % params->buf->size];
         // Espera una cantidad aleatoria de microsegundos.
-        usleep(rand() % params->wait_prod);
+        printf("%d\n", rand() % params->wait_prod);
+        usleep(rand() % params->wait_cons);
     }
 
     // Imprime lo que leyo
