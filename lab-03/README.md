@@ -32,7 +32,7 @@ Responder:
 
 ## Ejercicio 2 
 
-El programa `forkprio.c` debe crear un cierto número de procesos hijos, reduciendo progresivamente el valor de prioridad de cada uno. Pasado un cierto número de segundos, debe envíar una señal de terminación (`SIGTERM`) a todos sus hijos. Estos, antes de terminar su ejecución, deben imprimir su PID, prioridad y el número de segundos que ejecutaron.
+El programa `forkprio.c` debe crear un cierto número de procesos hijos, reduciendo progresivamente el valor de prioridad de cada uno. Pasado un cierto número de segundos debe envíar una señal de terminación (`SIGTERM`) a todos sus hijos. Estos, antes de terminar su ejecución, deben imprimir su PID, prioridad y el número de segundos que ejecutaron.
 
 El siguiente esquema muestra como es la relación con los procesos hijos:
 ```
