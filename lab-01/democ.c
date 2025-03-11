@@ -1,5 +1,8 @@
 /*
  * Este programa presenta la funcionalidad basica del lenguaje C.
+ * 
+ * Tenerlo como referencia para cuando se tengan dudas con el lenguaje.
+ *
  */
 
 /* Incluye la libreria stdio, que contiene las funciones puts(), printf(), etc */
@@ -23,8 +26,8 @@ int buffer[2048];
 
 /*
  * Definición de una función:
- * - Require un entero como parámetro.
  * - Retorna un entero.
+ * - Require un entero como parámetro.
  */
 int cuadrado(int x)
 {
@@ -56,6 +59,7 @@ int main(int argc, char* argv[])
     punto.y = 10;
 
     /* Actualiza el valor de la variable global. */
+    /* 0x indica que el valor es hexadecimal. */
     variable_global = 0xAB;     
 
     /* Invoca una función y guardamos el resultado en una variable. */
@@ -132,5 +136,6 @@ int main(int argc, char* argv[])
      * La ventaja de usar exit() es que se pueden especificar handlers que
      * se ejecuten antes de que el programa finalice.
      */
+    //exit(EXIT_SUCCESS);
 }
 
