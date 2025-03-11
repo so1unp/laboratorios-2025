@@ -38,3 +38,24 @@ Como todavía no se realizó una modifación al programa, no realiza ninguna acc
 ## Laboratorios
 - Lab0X: laboratorio.
 - xv6: código fuente de xv6.
+
+## xv6
+En el directorio `xv6` van a encontrar el código del sistema operativo _xv6_, una versión muy reducida de Unix. Parados en dicho directorio, pueden ejecutarlo utilizando la maquina virtual *QEMU* ejecutando el comando `make qemu-nox`. Verían algo similar a lo siguiente en la consola:
+
+```console
+Booting from Hard Disk..xv6...
+cpu0: starting 0
+sb: size 1000 nblocks 941 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
+init: starting sh
+$
+```
+
+Si ejecutamos un comando como `ls` veremos un error ya que no está implementada la ejecución de comandos:
+```console
+$ ls
+exec not implemented
+$
+```
+
+Para terminar la ejecución de QEMU, presionar `C^A x` (esto es, `Ctrl+A` y luego la tecla `x`).
+
