@@ -1,54 +1,12 @@
-# Laboratorio 1 - El Lenguaje de Programación C
+# Laboratorio 1 - Llamadas al sistema y el Lenguaje de programación C
 
-El objetivo de este laboratorio es familiarizarse con el lenguaje C y las herramientas de desarrollo. Como editor de texto se utilizará VSCode y se empleará el compilador desde la línea de comandos.  Para el control de versiones se empleará [Git](https://git-scm.com/) y GitHub para administrar los repositorios remotos. [Aquí](http://rogerdudler.github.io/git-guide/index.es.html) pueden leer una guía sencilla para aprender los comandos básicos de Git.
+El objetivo de este laboratorio es familiarizarse con el lenguaje C, las herramientas de desarrollo y las llamadas al sistema.
 
-### Compilación
-Para compilar los programas vamos a utilizar el comando `make`. Si se ejecuta sin parámetros, compila _todos_ los programas del laboratorio. Si se indica el nombre de un archivo _sin la extensión_ compila sólo el programa indicado.
-
-Por ejemplo, para compilar el ejercicio 1 (programa `sum.c`):
-```
-$ make sum
-gcc -g -Wall -Wextra -Wshadow -Wconversion -Wunreachable-code -o ./bin/sum sum.c
-sum.c: In function ‘main’:
-sum.c:4:14: warning: unused parameter ‘argc’ [-Wunused-parameter]
-    4 | int main(int argc, char *argv[])
-      |          ~~~~^~~~
-sum.c:4:26: warning: unused parameter ‘argv’ [-Wunused-parameter]
-    4 | int main(int argc, char *argv[])
-      |                    ~~~~~~^~~~~~
-$
-```
-
-El compilador genera una serie de _warnings_ (advertencias). En este caso, nos está indicando que los parámetros `argc` y `argv` de la función `main()` no estan siendo utilizados (`unused parameter`). El objetivo es que la resolución de cada ejercicio cumpla con el enunciado y que _además_ compile *sin advertencias*.
-
-El ejecutable se crea dentro del subdirectorio `bin` del laboratorio. Lo podemos comprobar haciendo un listado del contenido de dicho directorio:
-```
-$ ls bin
-sum 
-$
-```
-Para ejecutar el programa recien compilado:
-```
-$ bin/sum
-$
-```
-Como todavía no se realizó una modifación al programa, no realiza ninguna acción.
-
-## Ejercicio 0
-El programa `demo.c` es una demostración de las funcionalidades básicas del lenguaje C: declaración de variables, estructuras, ciclos, control, punteros e imprimir mensajes por la salida estándar haciendo uso de funciones de la biblioteca. Leer el código, compilar el programa y ejecutarlo.
+### Programa de referencia
+El programa `demo.c` demuestra las funcionalidades básicas del lenguaje C: declaración de variables, estructuras, ciclos, control, punteros e imprimir mensajes por la salida estándar haciendo uso de funciones de la biblioteca.
 
 ## Ejercicio 1
-Completar el programa `hola.c` para que imprima por la salida estandar el mensaje indicado como parámetro. Utilizar la función [`printf()`](https://www.man7.org/linux/man-pages/man3/printf.3.html) para imprimir el mensaje. Un ejemplo de ejecución es:
-```
-$ bin/hola "hola mundo"
-hola mundo
-$
-```
-
-Para obtener el texto a imprimir se debe utilizar el argumento `argv[]` de la función `main()`. No olvidar verificar que exista el argumento inspeccionando `argc`.
-
-## Ejercicio 2
-Modificar el programa `sum.c` para que retorne la suma de un número arbitrario de enteros indicados desde la línea de comandos. Por ejemplo:
+Modificar el programa `sum.c` para que retorne la suma de los números enteros indicados desde la línea de comandos. Por ejemplo:
 ```
 $ bin/sum 1 2 3
 6
@@ -56,7 +14,7 @@ $
 ```
 Utilizar la funcion [`atoi()`](https://www.man7.org/linux/man-pages/man3/atoi.3.html) para convertir las cadenas de texto a números enteros.
 
-## Ejercicio 3
+## Ejercicio 2
 Completar el programa `palabras.c` para que imprima las palabras que recibe desde la _entrada estándar_. Por ejemplo:
 ```
 $ bin/palabras
@@ -75,24 +33,59 @@ En el ejemplo, luego de ingresar una frase y presionar Enter (`↵`), el program
 
 Utilizar la función [`getchar()`](https://www.man7.org/linux/man-pages/man3/getchar.3.html) para obtener un carácter desde la _entrada estándar_.
 
-## Ejercicio 4
-Completar el programa `histograma.c` para que imprima un histograma de las longitudes de las palabras de su entrada. La versión más sencilla del histograma es con las barras horizontales. La orientación vertical es más desafiante. El texto a analizar se debe leer desde la *entrada estándar*. Un ejemplo de ejecución sería:
+## Ejercicio 3
+Ejecutar el programa `sum.c` mediante el comando `strace` como se indica a continuación, para obtener las llamadas al sistema que utiliza durante su ejecución:
+
+```console
+$ strace bin/sum 1 2 3 > /dev/null
 ```
-$ bin/histograma
-Esto es un texto ↵
-Esto es otro texto ↵
-^D
-1
-2 ***
-3
-4 ***
-5 **
+
+**Nota**: `> /dev/null` redirije la _salida estándar_ de `bin/hola` al archivo especial del sistema `/dev/null`, que descarta todo lo que se escriba en el mismo. De esta manera evitamos que la salida del comando `hola` se mezcle con la de `strace`.
+
+Responder:
+
+1. ¿Cuantas llamadas al sistema invoca el programa?
+2. ¿Cúales son las llamadas al sistema que invocan las funciones de biblioteca `puts()` y `exit()`?
+3. Describir los parámetros que utiliza la llamada al sistema invocada por `puts()`.
+
+## Ejercicio 4
+Completar los programas `encrypt.c` y `decrypt.c`, para que encripten y desencripten un mensaje respectivamente, utilizando la técnica *Least Significant Bit* (LSB).
+
+### Llamadas al sistema a utilizar
+
+Utilizar las siguientes llamadas al sistema:
+
+- [`open()`](http://man7.org/linux/man-pages/man2/open.2.html)
+- [`write()`](http://man7.org/linux/man-pages/man2/write.2.html)
+- [`read()`](http://man7.org/linux/man-pages/man2/read.2.html)
+- [`fstat()`](http://man7.org/linux/man-pages/man2/fstat.2.html)
+- [`close()`](http://man7.org/linux/man-pages/man2/close.2.html)
+
+### Encriptador
+El programa `encrypt.c` debe leer el mensaje a encriptar como un argumento desde la línea de comando y generar el contenido encriptado en la salida estándar o bien guardarlo en el archivo indicado mediante la opción `-o`. Utilizar `argv` y `argc` para determinar donde debe escribirse el resultado. Cada caracter del mensaje es almacenado en el bit menos significativo de cada byte. Por ejemplo, el mensaje "hola" requiere de 32 bytes: 4 caracteres cada uno de 8 bits (1 byte).
+
+### Desencriptador
+El programa `decrypt.c` debe leer los datos encriptados desde la entrada estándar o desde el archivo indicado mediante la opción `-i` y presentar el mensaje oculto en la salida estándar. Recordar que el tamaño del archivo encriptado (o el número de bytes leído de la entrada estándar) indica la longitud del mensaje oculto.
+
+## Ejercicio 5: ejecución de xv6
+En el repositorio `xv6` van a encontrar el código del sistema operativo _xv6_, una versión muy reducida de Unix. Parados en dicho directorio, pueden ejecutarlo utilizando la maquina virtual *QEMU* ejecutando el comando `make qemu-nox`. Verían algo similar a lo siguiente en la consola:
+
+```console
+Booting from Hard Disk..xv6...
+cpu0: starting 0
+sb: size 1000 nblocks 941 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
+init: starting sh
 $
+```
 
-``` 
-En el ejemplo se ejecuta el programa, que queda a la espera de datos desde la entrada estándar. Se ingresan las frases `Esto es un texto` y `Esto es otro texto`, cada una seguida de un *Enter*. Luego se presiona `^D` (Ctrl+D), combinación que envía un `EOF`.
+Si ejecutamos un comando como `ls` veremos un error ya que no está implementada la ejecución de comandos:
+```console
+$ ls
+exec not implemented
+$
+```
 
-El histograma indica que en el texto analizado se encontraron tres palabras con dos letras (*es* dos veces y *un*), tres palabras de cuatro letras y dos de cinco.  
+Para terminar la ejecución de QEMU, presionar `C^A x` (esto es, `Ctrl+A` y luego la tecla `x`).
 
 ---
 
