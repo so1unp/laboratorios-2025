@@ -39,7 +39,7 @@ Ejecutar el programa `sum.c` mediante el comando `strace` como se indica a conti
 $ strace bin/sum 1 2 3 > /dev/null
 ```
 
-**Nota**: `> /dev/null` redirije la _salida estándar_ de `bin/hola` al archivo especial del sistema `/dev/null`, que descarta todo lo que se escriba en el mismo. De esta manera evitamos que la salida del comando `hola` se mezcle con la de `strace`.
+**Nota**: `> /dev/null` redirije la _salida estándar_ de `bin/sum` al archivo especial del sistema `/dev/null`, que descarta todo lo que se escriba en el mismo. De esta manera evitamos que la salida del comando `sum` se mezcle con la de `strace`.
 
 Responder:
 
@@ -66,25 +66,9 @@ El programa `encrypt.c` debe leer el mensaje a encriptar como un argumento desde
 ### Desencriptador
 El programa `decrypt.c` debe leer los datos encriptados desde la entrada estándar o desde el archivo indicado mediante la opción `-i` y presentar el mensaje oculto en la salida estándar. Recordar que el tamaño del archivo encriptado (o el número de bytes leído de la entrada estándar) indica la longitud del mensaje oculto.
 
-## Ejercicio 5: ejecución de xv6
-En el repositorio `xv6` van a encontrar el código del sistema operativo _xv6_, una versión muy reducida de Unix. Parados en dicho directorio, pueden ejecutarlo utilizando la maquina virtual *QEMU* ejecutando el comando `make qemu-nox`. Verían algo similar a lo siguiente en la consola:
+## Ejercicio 5
 
-```console
-Booting from Hard Disk..xv6...
-cpu0: starting 0
-sb: size 1000 nblocks 941 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
-init: starting sh
-$
-```
-
-Si ejecutamos un comando como `ls` veremos un error ya que no está implementada la ejecución de comandos:
-```console
-$ ls
-exec not implemented
-$
-```
-
-Para terminar la ejecución de QEMU, presionar `C^A x` (esto es, `Ctrl+A` y luego la tecla `x`).
+Realizar un breve informe del sistema operativo asignado a tu grupo durante la clase. El reporte debe relacionar los temas introductorios presentados en las clases teóricas y no debe superar las 2 (dos) carillas (formato A4, letra 12 puntos).
 
 ---
 
