@@ -1,6 +1,4 @@
 # Laboratorio 1 - Llamadas al sistema y el Lenguaje de programación C
-
-<<<<<<< HEAD
 El objetivo de este laboratorio es familiarizarse con el lenguaje C y las herramientas de desarrollo.
 
 ### Programa de referencia
