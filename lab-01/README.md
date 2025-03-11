@@ -32,21 +32,6 @@ En el ejemplo, luego de ingresar una frase y presionar Enter (`↵`), el program
 
 Utilizar la función [`getchar()`](https://www.man7.org/linux/man-pages/man3/getchar.3.html) para obtener un carácter desde la _entrada estándar_.
 
-## Ejercicio 3
-Ejecutar el programa `sum.c` mediante el comando `strace` como se indica a continuación, para obtener las llamadas al sistema que utiliza durante su ejecución:
-
-```console
-$ strace bin/sum 1 2 3 > /dev/null
-```
-
-**Nota**: `> /dev/null` redirije la _salida estándar_ de `bin/sum` al archivo especial del sistema `/dev/null`, que descarta todo lo que se escriba en el mismo. De esta manera evitamos que la salida del comando `sum` se mezcle con la de `strace`.
-
-Responder:
-
-1. ¿Cuantas llamadas al sistema invoca el programa?
-2. ¿Cúales son las llamadas al sistema que invocan las funciones de biblioteca `puts()` y `exit()`?
-3. Describir los parámetros que utiliza la llamada al sistema invocada por `puts()`.
-
 ## Ejercicio 4
 Completar los programas `encrypt.c` y `decrypt.c`, para que encripten y desencripten un mensaje respectivamente, utilizando la técnica *Least Significant Bit* (LSB).
 
