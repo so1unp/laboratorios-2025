@@ -23,3 +23,6 @@ clean:
 
 zip:
 	git archive --format zip --output ${USER}-lab01.zip HEAD
+
+html:
+	pandoc -o README.html -f gfm README.md
