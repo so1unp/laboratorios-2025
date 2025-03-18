@@ -1,4 +1,4 @@
-# Laboratorio 3 - Procesos y señales
+# Laboratorio 3 - Planificación
 
 ## Ejercicio 1
 
@@ -30,9 +30,9 @@ Responder:
 
 1. ¿Cuáles son las señales que no es posible atrapar? ¿Por qué?
 
-## Ejercicio 2 
+## Ejercicio 2: creación de procesos
+El programa `forkprio.c` debe crear un cierto número de procesos hijos, cada uno ejecutando con un valor de prioridad progresivamente más bajo. Luego de un cierto número de segundos se debe envíar una señal de terminación (`SIGTERM`) a todos los procesos hijos. Estos, antes de terminar su ejecución, deben imprimir su PID, prioridad y el número de segundos que ejecutaron.
 
-El programa `forkprio.c` debe crear un cierto número de procesos hijos, reduciendo progresivamente el valor de prioridad de cada uno. Pasado un cierto número de segundos debe envíar una señal de terminación (`SIGTERM`) a todos sus hijos. Estos, antes de terminar su ejecución, deben imprimir su PID, prioridad y el número de segundos que ejecutaron.
 
 El siguiente esquema muestra como es la relación con los procesos hijos:
 ```
@@ -83,6 +83,18 @@ Responder:
 2. Ejecutar `bin/forkprio 1 10 1` en tu computadora y luego en el servidor de la cátedra ¿Existe alguna diferencia en el resultado? Ejecutar múltiples veces para estar seguro de los resultados.
 3. Ejecutar `bin/forkprio 10 30 1 | sort -k 4 -h` y describir el resultado de la ejecución. ¿Por qué el total del tiempo ejecutado por los procesos hijos puede ser mayor que el tiempo que espera el proceso padre?
 4. Si el comando anterior se ejecuta indicando que no se cambien las prioridades de los procesos hijos, ¿Cúal es el resultado? Explicar por qué.
+
+## Ejercicio 3: planificación con hilos 
+Completar el programa `sched-threads.c` para que cree una cierta cantidad de hilos que escriben en un buffer compartido. Este buffer es un arreglo de enteros, donde cada hilo escribe su identificador una cierta cantidad de veces. Al finalizar el programa se imprime este arreglo, de manera que se observa el orden de ejecución de los hilos. Se debe poder especificar como algoritmos de planificación `SCHED_FIFO`, `SCHED_RR` y `SCHED_OTHER`.
+
+Por ejemplo, una vez implementado el programa, una ejecución que cree tres hilos, cada uno escribiendo tres items en el buffer, planificados mediante FIFO, debería dar un resultado similar al siguiente:
+```
+$ sudo ./bin/sched-threads -F 3 3
+0 0 0 1 1 1 2 2 2
+$
+```
+
+Notar que se debe ejecutar el comando con `sudo` ya que se necesitan mayores privilegios para utilizar las políticas `SCHED_RR` y `SCHED_FIFO`.
 
 ## Ejercicio 3: getppid() en xv6
 

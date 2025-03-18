@@ -32,8 +32,8 @@ En el ejemplo, luego de ingresar una frase y presionar Enter (`↵`), el program
 
 Utilizar la función [`getchar()`](https://www.man7.org/linux/man-pages/man3/getchar.3.html) para obtener un carácter desde la _entrada estándar_.
 
-## Ejercicio 4
-Completar los programas `encrypt.c` y `decrypt.c`, para que encripten y desencripten un mensaje respectivamente, utilizando la técnica *Least Significant Bit* (LSB).
+## Ejercicio 3
+Completar los programas `encrypt.c` y `decrypt.c` para que encripten y desencripten un mensaje respectivamente, utilizando la [técnica de esteganografía de reemplazo del bit menos significativo](https://es.wikipedia.org/wiki/Esteganograf%C3%ADa#Inserci%C3%B3n_en_el_bit_menos_significativo).
 
 ### Llamadas al sistema a utilizar
 
@@ -46,14 +46,10 @@ Utilizar las siguientes llamadas al sistema:
 - [`close()`](http://man7.org/linux/man-pages/man2/close.2.html)
 
 ### Encriptador
-El programa `encrypt.c` debe leer el mensaje a encriptar como un argumento desde la línea de comando y generar el contenido encriptado en la salida estándar o bien guardarlo en el archivo indicado mediante la opción `-o`. Utilizar `argv` y `argc` para determinar donde debe escribirse el resultado. Cada caracter del mensaje es almacenado en el bit menos significativo de cada byte. Por ejemplo, el mensaje "hola" requiere de 32 bytes: 4 caracteres cada uno de 8 bits (1 byte).
+El programa `encrypt.c` debe leer el mensaje a encriptar como un argumento desde la línea de comando y generar el contenido encriptado en la salida estándar o bien guardarlo en el archivo indicado mediante la opción `-o`. Utilizar `argv` y `argc` para determinar donde debe enviarse el resultado. Cada caracter del mensaje es almacenado en el bit menos significativo de cada byte. Por ejemplo, el mensaje "hola" requiere de 32 bytes: 4 caracteres cada uno de 8 bits (1 byte).
 
 ### Desencriptador
-El programa `decrypt.c` debe leer los datos encriptados desde la entrada estándar o desde el archivo indicado mediante la opción `-i` y presentar el mensaje oculto en la salida estándar. Recordar que el tamaño del archivo encriptado (o el número de bytes leído de la entrada estándar) indica la longitud del mensaje oculto.
-
-## Ejercicio 5
-
-Realizar un breve informe del sistema operativo asignado a tu grupo durante la clase. El reporte debe relacionar los temas introductorios presentados en las clases teóricas y no debe superar las 2 (dos) carillas (formato A4, letra 12 puntos).
+El programa `decrypt.c` debe leer los datos encriptados desde la entrada estándar o desde el archivo indicado mediante la opción `-i` y presentar el mensaje oculto en la salida estándar. El tamaño del archivo encriptado (o el número de bytes leído de la entrada estándar) indica la longitud del mensaje oculto.
 
 ---
 

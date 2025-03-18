@@ -4,22 +4,8 @@ En este laboratorio vamos a trabajar con llamadas al sistema relacionadas con el
 
 Las respuestas a las preguntas planteadas en los ejercicios deben ser entregadas en un archivo PDF en el campus virtual.
 
-## Ejercicio 1
-Ejecutar el programa `sum.c` del Laboratorio 1 mediante el comando `strace` como se indica a continuación, para obtener las llamadas al sistema que invoca durante su ejecución:
 
-```console
-$ strace bin/sum 1 2 3 > /dev/null
-```
-
-**Nota**: `> /dev/null` redirije la _salida estándar_ de `bin/sum` al archivo especial del sistema `/dev/null`, que descarta todo lo que se escriba en el mismo. De esta manera evitamos que la salida del comando `sum` se mezcle con la de `strace`.
-
-Responder:
-
-1. ¿Cuantas llamadas al sistema invoca el programa?
-2. ¿Cúales son las llamadas al sistema que invocan las funciones de biblioteca `puts()` y `exit()`?
-3. Describir los parámetros que utiliza la llamada al sistema invocada por `puts()`.
-
-## Ejercicio 2: Interprete de comandos
+## Ejercicio 1: Interprete de comandos
 
 El programa `sh.c` es un interprete de comandos (en inglés generalmente denominado _shell_). Sin embargo, no tiene implementada la funcionalidad de ejecución de programas o de redirección de entrada/salida. Cuando se ejecuta imprime un símbolo de sistema (`$`) y queda a la espera de que el usuario ingrese un comando. Se puede terminar su ejecución con `^C`.
 
@@ -44,8 +30,24 @@ El parser implementado en el _shell_ ya reconoce estos operadores y genera una e
 
 Implementar la ejecución de comandos y la redirección de entrada/salida en el shell de `xv6` usando el código anterior.
 
-## Ejercicio 3 - Traza de llamadas al sistema
+## Ejercicio 2: Traza de llamadas al sistema
 
+### Traza de llamadas al sistema en Linux
+Ejecutar el programa `sum.c` del Laboratorio 1 mediante el comando `strace` como se indica a continuación, para obtener las llamadas al sistema que invoca durante su ejecución:
+
+```console
+$ strace bin/sum 1 2 3 > /dev/null
+```
+
+**Nota**: `> /dev/null` redirije la _salida estándar_ de `bin/sum` al archivo especial del sistema `/dev/null`, que descarta todo lo que se escriba en el mismo. De esta manera evitamos que la salida del comando `sum` se mezcle con la de `strace`.
+
+Responder:
+
+1. ¿Cuantas llamadas al sistema invoca el programa?
+2. ¿Cúales son las llamadas al sistema que invocan las funciones de biblioteca `puts()` y `exit()`?
+3. Describir los parámetros que utiliza la llamada al sistema invocada por `puts()`.
+
+### Traza de llamadas al sistema en xv6
 El programa `trace.c` en _xv6_ activa o desactiva la traza de llamadas al sistema: imprime por la salida estándar las llamadas al sistema que son invocadas por los programas en ejecución. Al pasarle `1` como parámetro, activa la traza. Para desactivarla, se utiliza el parámetro `0`.
 
 Por ejemplo, al ejecutar `trace 1` deberían tener una salida similar a la siguiente:
@@ -61,9 +63,9 @@ Luego, cuando se ejecuta un programa, se imprimiran las llamadas al sistema que 
 
 Responder:
 
-1. Con la traza de llamadas al sistema activa, ejecutar el comando `echo hola`. Explicar por que se invocan las llamadas al sistema que se presentan en la traza.
+1. Ejecutar el comando `echo hola`. Explicar por que se invocan las llamadas al sistema que se presentan en la traza.
 
-## Ejercicio 4 - Implementar una nueva llamada al sistema en xv6
+## Ejercicio 3 - Implementar una nueva llamada al sistema en xv6
 
 En este ejercicio vamos a modificar el _kernel_ de _xv6_ para agregar una **nueva llamada al sistema** que retorne al usuario el número **42** (el sentido de la vida, el universo y todo lo demás).
 
