@@ -36,7 +36,13 @@ $
 Como todavía no se realizó una modifación al programa, no realiza ninguna acción.
 
 ## Laboratorios
-- Lab0X: laboratorio.
+- Lab01: Entorno de programación C.
+- Lab02: Llamadas al sistema.
+- Lab03: Planificación. 
+- Lab04: Sincronización y comunicación.
+- Lab05: Administratición de memoria.
+- Lab06: Entrada / Salida.
+- Lab07: Sistemas de archivos.
 - xv6: código fuente de xv6.
 
 ## xv6
