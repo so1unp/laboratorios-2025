@@ -1,69 +1,127 @@
-# Laboratorio 6 - Entrada / Salida
+# Laboratorio 7 - Administración de Memoria
 
-## Ejercicio 1: Interrupción del teclado
+## Ejercicio 1: simulador de paginación y memoria virtual
 
-Cuando ejecutamos _xv6_ utilizando el comando `make qemu-nox`, se emula una conexión por medio de una terminal serial (ver Terminales en las filminas de teoría). Al presionar una tecla, se genera una interrupción en la interfaz UART. Para presentar un caracter por pantalla se envía por la misma interfaz.
+Implementar en el programa `sim.c` un simulador de paginación y memoria virtual, que simule una computadora con 64 KiB de memoria virtual, memoria física de 32 KiB, un tamaño de las páginas de 4 KiB y 64 KiB de espacio en almacenamiento secundario para páginas que se desalojen. El parámetro que debe aceptar el programa es el tipo de algoritmo de reemplazo de páginas: `-f` (FIFO) o `-l` (LRU).
 
-1. Describir el proceso de E/S en _xv6_ cuando el usuario presiona una tecla del teclado. ¿Se utilizan comandos específicos de E/S o se utiliza E/S mapeada en memoria?
+El simulador debe leer desde la entrada estándar un identificador del proceso y el número de página que modifica, uno por línea. A medida que va leyendo, realiza la asignación en memoria, si es posible. Debe finalizar al leer un EOF.
 
-2. Cuando se presiona una tecla, ¿El caracter es inmediatamente enviado al proceso que este leyendo de la entrada estándar? Justificar.
-
-## Ejercicio 2: Comunicación por la pantalla.
-Para simular la salida por un monitor conectado a la tarjeta de vídeo en la PC, hay que ejecutar _xv6_ utilizando el comando `make -qemu` (sin el `-nox`).
-
-La función `cgaputc()` escribe el carácter que recibe como parámetro en la memoria de video en modo texto de un adaptador de vídeo CGA. El archivo `cga.pdf` es el manual de referencia de este adaptador. 
-
-Se utilizan los siguientes datos:
-- `CRTPORT` es un `#define` con el valor `0x3D4`, que es la **dirección** del puerto de comandos de la controladora de vídeo en el espacio de direcciones de E/S.
-- La variable `*crt` es un puntero a la **memoria de video en modo texto**, mapeada en la dirección `0xB8000`. La memoria de vídeo es un arreglo de 4000 bytes que representa una grilla de 80 columnas y 25 filas. Cada carácter requiere 2 bytes, el primero indica el color de la fuente y fondo, mientras que el segundo es el código ASCII.
-- La posición del cursor es almacenada por la controladora de vídeo en los registros _Cursor Location High Register_ y _Cursor Location Low Register_ (ver archivo `cga.txt`).
-
-La función `cgaputc()` realiza las siguientes acciones:
-1. Obtiene la posición del cursor y lo almacena en la variable `pos`.
-3. Si el caracter a mostrar es un `\n` o un `BACKSPACE` actualiza la variable `pos`, que almancena la posición del cursor.
-2. En cambio, si el carácter es imprimible, lo escribe en la memoria de vídeo en la posición correspondiente. 
-4. Comprueba que la nueva posición del cursor este dentro de los límites de la pantalla.
-5. Realiza el _scroll_ (desplazamiento) de la pantalla si corresponde.
-6. Actualiza el cursor hardware con la nueva posición.
-
-Responder:
-1. Agregar comentarios en el código de la función `cgaputc()` que indiquen si una operación de E/S es mapeada en memoria o utilizar registros especiales de E/S. 
-2. Modificar `cgaput.c` para cambiar el color con que el que se imprimen los caracteres por pantalla. Probar también cambiar el color de fondo. Ver la sección *Alphanumeric Modes* (pag. 10) en la documentación CGA (recordar que Intel usa *little-endian*). 
-
-## Ejercicio 3: Disco
-
-En este ejercicio vamos a estudiar como funciona el _driver_ de disco y el sistema de E/S de _xv6_. Usen de referencia el documento _xv6-ide.pdf_ que describe la E/S de disco en _xv6_.
-
-En _xv6_ el disco se organiza de la siguiente manera (ver archivos `fs.h` y `mkfs.c`):
+Por ejemplo, la siguiente entrada indica que el proceso 1 accede a las páginas 3 y 9, y el proceso 2 a la página 1.
 ```
- ┌──────┬─────────────┬─────┬─────────┬──────┬──────┐
- │ boot │ super-block │ log │ i-nodes │ free │ data │
- └──────┴─────────────┴─────┴─────────┴──────┴──────┘
+1
+3
+1
+9
+1
+3
+2
+1
 ```
-Donde:
-- _boot_: sector con información para el inicio del sistema.
-- _super-block_: super bloque del sistema de archivos.
-- _log_: conjunto de sectores destinado a realizar _journaling_ del sistema de archivos. Los ignoraremos por el momento.
-- _inodes_: sectores que almacenan información de los archivos.
-- _free_: sector que contiene informacion de los sectores libres.
-- _data_: sectores que contienen los datos de los archivos y directorios.
 
-Copiar el programa `testwrite.c` en el directorio de _xv6_ y agregarlo en el arreglo `UPROGS` del `Makefile`. Modificar el archivo `ide.c` para que imprima por pantalla el número de sector de disco que se esta modificando, ignorando los sectores menores a 32. Una vez realizada la modificación:
+Una vez finalizada la ejecución el simulador debe imprimir:
 
-1. Iniciar _xv6_ utilizando `make clean && make qemu-nox` (de manera que se genere de nuevo la imagen del disco duro) y ejecutar nuevamente `testwrite`. ¿Qué sectores de disco se están modificando? ¿Cuantos son los sectores que contienen el contenido del archivo generado? Justificar el número.
+- La tabla de páginas de cada proceso. El formato debe ser el siguiente (usando el ejemplo anterior):
+    - Proceso 1: `- - 1 - - - - - 2 - - - - - - - -`
+    - Proceso 2: `3 - - - - - - - - - - - - - - - -`
+- La memoria física. Mismo formato que las tablas de páginas, pero cada entrada debe ser PID.PAGINA. Para el ejemplo anterior:
+    - `1.3 1.9 2.1 - - - - -`
+    - Indica que en el primer marco se almaceno la tercer página del proceso 1.
+- El almacenamiento secundario. Mismo formato que la memoría física. Para el ejemplo anterior:
+    - `- - - - - - - - - - - - - - - - -`
 
-2. Sin reiniciar _xv6_, ejecutar nuevamente `testwrite`. ¿Qué diferencia hay en la lista de sectores modificados? Justificar.
+## Ejercicio 2: mapa de memoria de un proceso
 
-3. Resumir el ciclo de vida del requerimiento de E/S de `testwrite.c`, explicando las llamadas al sistema utilizadas, que interrupciones ocurren y la secuencia de funciones invocadas por el _kernel_.
+En este ejercicio analizaremos la memoria de un proceso en ejecución. Usaremos el programa `maps.c` que utiliza `fork()` para crear un proceso hijo. Ambos procesos esperan recibir dos señales `SIGUSR1`. De esta manera el proceso queda bloqueado a la espera de la señal y nos permite estudiar como estan mapeados en memoria.
 
-4. ¿Qué tipo de política de planificación de disco se utiliza?
+### Actividades
 
-5. ¿Se emplea DMA o la operación de E/S es administrada totalmente por el SO?
+Adjuntar las respuestas a las actividades en un documento PDF.
 
-6. ¿Por que la función `idewait()` realiza un `polling`?
+1. Compilar y ejecutar el programa `maps.c` en una terminal, donde queda esperando por el arribo de una señal.
 
-7. Opcional: agregar la llamada al sistema `int rblk(int device, int nblock, char *buf)` que permita leer el contenido del sector de disco indicado. Probar la llamada al sistema usando el programa `rblk.c`, leyendo los primeros bytes de alguno de los bloques de datos generados por la ejecución de `testwrite.c`.
+2. Desde otra terminal, ejecutar `htop`. Luego, presionar `F4` (filtrar) y escribir `bin/maps` y dar Enter. De esta manera, sólo se verán los dos procesos que estan ejecutando `maps.c`. Presionar también `F5`, que presenta más claramente la relación entre proceso padre e hijo.
+    - La columna `RES` indica cuantas páginas ocupa el proceso en la memoria física. Y la columna `SHR` cuántas están compartidas. ¿Por qué ambos valores son cero en el proceso hijo?
+
+3. Salir de `htop` y ejecutar el comando `pmap -p $(pgrep maps)`. Como resultado debe mostrar información de ambos procesos (padre e hijo).
+    - Notar que las direcciones de memoria son idénticas en ambos procesos. ¿Por qué?
+
+4. A continuación, ejecutar `pmap -p $(pgrep maps) | grep maps`, que muestra los mapeos de memoria correspondientes al ejecutable de nuestro programa.
+    - ¿Por qué una de las páginas esta marcada como de ejecución?
+    - ¿Por qué otra de las páginas permite la escritura?
+
+5. A continuación, ejecutar `pmap -p -XX $(pgrep maps) > maps1.txt`. Como este comando genera mucha más información redirigimos la salida al archivo `maps.txt` para leer más comodamente los resultados en un editor de texto.
+
+6. Abrir el archivo `maps1.txt` y buscar el mapeo del _heap_ y de la página marcada como de lectura/escritura en el punto 3.
+    - Según indica la columna `Shared_Dirty` ambos mapeos estan *compartidos*. ¿Por qué?
+
+7. Eliminar ambos procesos ejecutando `kill -15 $(pgrep maps)`.
+
+8. Modificar `maps.c` de manera que el proceso hijo modifique la variable global `a` y también el _heap_.
+
+9. Ejecutar nuevamente `maps` en una terminal.
+
+10. Desde la otra terminal, repetir los puntos 4 y 5 (tendría que mostrar identicos resultados).
+
+11. Ejecutar `kill -s SIGUSR1 $(pgrep maps)` de manera que ambos procesos continuen su ejecución.
+
+12. Ejecutar `pmap -p -XX $(pgrep maps) > maps2.txt`.
+    - La columna `Shared_Dirty` del _heap_ y de la pagina marcada como de escritura son cero en ambos procesos. ¿Por qué?
+
+13. Finalmente, ejecutar `kill -s SIGUSR1 $(pgrep maps)` de manera que ambos procesos finalicen su ejecución.
+
+## Ejercicio 3: contador de páginas
+Agregar a _xv6_ una llamada al sistema `pgcnt()`, que retorne la cantidad de páginas que ocupa actualmente el proceso en memoria. El código de la llamada al sistema es el siguiente (lo pueden encontrar también en el archivo `sys_pgcnt.c`):
+```
+int
+sys_pgcnt(void)
+{
+    pde_t *pde;  // Puntero a una entrada en la tabla de directorio.
+    pte_t *pte;  // Puntero a una entrada en una tabla de páginas.
+
+    int i = 0;
+    int j = 0;
+    int cnt = 0;
+
+    // PTE_P: Si la página está en memoria.
+    // PTE_U: Si la página corresponde a un proceso de usuario.
+    unsigned int flag = PTE_P | PTE_U;
+
+    for(i=0; i < NPDENTRIES; i++)
+        // i-ésima entrada en la tabla de directorio.
+        pde = &((myproc()->pgdir)[i]);
+
+        // Si no es NULL y hay páginas en memoria
+        if(*pde & PTE_P) {
+            pte = (pte_t*) P2V(PTE_ADDR(*pde));
+
+            // Recorre cada entrada de la tabla secundaria
+            for(j=0; j < NPTENTRIES; j++) {
+                // Si esta en memoria la página, la cuenta
+                if((pte[j] & flag) == flag) {
+                   cnt = cnt + 1;
+                }
+            }
+        }
+    }
+
+    return cnt;
+}
+```
+
+El archivo `pgcnt.c` es un programa de usuario que invoca la llamada al sistema `pgcnt()`. Deben agregarlo a la lista `UPROGS` en el `Makefile` de _xv6_.
+
+Este programa invoca la llamada al sistema `pgcnt()` tres veces. La primera al inicio del programa y luego de invocar a `sbrk` y `malloc`:
+```
+$ pgcnt
+2
+3
+11
+$
+```
+
+### Responder:
+* Explicar el resultado del programa, justificando el número de páginas que cada invocación a `pgcnt()` retorna. ¿Por qué la diferencia entre las invocaciones de `sbrk` y `malloc`?
 
 ---
 
-¡Fin del Laboratorio!
+¡Fín del Laboratorio!

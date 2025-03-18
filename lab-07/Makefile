@@ -2,7 +2,7 @@ CC=gcc
 BIN=./bin
 CFLAGS=-Wall -g -pthread -Werror
 
-PROG=maps sim
+PROG=write_bytes fstat
 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
@@ -20,7 +20,7 @@ clean:
 	rm -f $(LIST)
 
 zip:
-	git archive --format zip --output ${USER}-lab07.zip HEAD
+	git archive --format zip --output ${USER}-lab08.zip HEAD
 
 html:
 	pandoc -o README.html -f gfm README.md
