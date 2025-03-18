@@ -1,4 +1,4 @@
-# Laboratorio 5 - Sincronizacion y comunicación
+# Laboratorio 4 - Sincronización y comunicación
 
 ## Ejercicio 1: problemas clásicos de IPC
 Implementar uno de los siguientes problemas clásicos de IPC:
@@ -62,7 +62,6 @@ Una vez completado el programa, deben poder crear colas de mensajes y envíar y 
 ![Ejemplo de uso de Msg](stuff/msgbox.gif)
 
 ## Ejercicio 3: memoria compartida
-
 Vamos a armar un _canvas_, un espacio de memoria compartida cuyo contenido puede ser modificado por distintos usuarios. Este espacio es un arreglo de 25x25 caracteres, sobre el cual se pueden escribir palabras en alguna posición. La estructura de datos que representa el _canvas_ es `canvas_t`:
 
 ```c
@@ -88,4 +87,4 @@ Completar el programa `canvas.c`, de manera que se puedan crear, eliminar, impri
 
 ---
 
-¡Fin del Laboratorio 5!
+¡Fin del Laboratorio 4!
