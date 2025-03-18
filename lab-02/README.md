@@ -77,7 +77,7 @@ Para referencia ver como esta implementada la llamada al sistema `sys_trace` del
 - `syscall.c`: código que invoca la llamadas al sistema dentro del _kernel_.
 - `sysproc.c`: aquí implementaremos la llamada al sistema, aunque podría estar en cualquier otro archivo `.c`.
 
-El programa `answer.c` invoca la llamada al sistema e imprime el resultado (`42`). El código esta comentado dado que no existe la llamada. Una vez que la hayan implementado descomentar el código correspondiente en el programa, recompilar y ejecutar nuevamente _xv6_ para verificar que se invoque correctamente la nueva llamada al sistema.
+El programa `answer.c` invoca la llamada al sistema e imprime el resultado (el número `42`). El código donde se invoca la llamada al sistema esta comentado dado que no existe aún dicha llamada. Una vez que la hayan implementado, descomentar el código correspondiente en el programa, recompilar y ejecutar nuevamente _xv6_ para verificar que se invoque correctamente la nueva llamada al sistema.
 
 ---
 
