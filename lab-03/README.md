@@ -30,7 +30,7 @@ Responder:
 
 1. ¿Cuáles son las señales que no es posible atrapar? ¿Por qué?
 
-## Ejercicio 2: creación de procesos
+## Ejercicio 1: creación y planificación de procesos
 El programa `forkprio.c` debe crear un cierto número de procesos hijos, cada uno ejecutando con un valor de prioridad progresivamente más bajo. Luego de un cierto número de segundos se debe envíar una señal de terminación (`SIGTERM`) a todos los procesos hijos. Estos, antes de terminar su ejecución, deben imprimir su PID, prioridad y el número de segundos que ejecutaron.
 
 
@@ -84,7 +84,7 @@ Responder:
 3. Ejecutar `bin/forkprio 10 30 1 | sort -k 4 -h` y describir el resultado de la ejecución. ¿Por qué el total del tiempo ejecutado por los procesos hijos puede ser mayor que el tiempo que espera el proceso padre?
 4. Si el comando anterior se ejecuta indicando que no se cambien las prioridades de los procesos hijos, ¿Cúal es el resultado? Explicar por qué.
 
-## Ejercicio 3: planificación con hilos 
+## Ejercicio 3: creación y planificación de hilos 
 Completar el programa `sched-threads.c` para que cree una cierta cantidad de hilos que escriben en un buffer compartido. Este buffer es un arreglo de enteros, donde cada hilo escribe su identificador una cierta cantidad de veces. Al finalizar el programa se imprime este arreglo, de manera que se observa el orden de ejecución de los hilos. Se debe poder especificar como algoritmos de planificación `SCHED_FIFO`, `SCHED_RR` y `SCHED_OTHER`.
 
 Por ejemplo, una vez implementado el programa, una ejecución que cree tres hilos, cada uno escribiendo tres items en el buffer, planificados mediante FIFO, debería dar un resultado similar al siguiente:
@@ -95,6 +95,34 @@ $
 ```
 
 Notar que se debe ejecutar el comando con `sudo` ya que se necesitan mayores privilegios para utilizar las políticas `SCHED_RR` y `SCHED_FIFO`.
+
+## Ejercicio 3: procesos vs threads
+
+En este ejercicio vamos a comparar el costo de la creación de hilos con el de creación de procesos.
+
+El programa `benchmark.c` crea la cantidad de procesos o de hilos indicada en la línea de comandos. El programa ya cuenta con la funcionalidad de procesos implementanda. Por ejemplo, el siguiente comando crea 1000 procesos hijos (opción `-p`): 
+```sh
+$ bin/benchmark -p 1000
+```
+
+Cada vez que crea un proceso, espera a que termine antes de crear el siguiente. Se debe implementar el código necesario para crear hilos (opción `-t`). Utilizar las siguientes funciones:
+
+* [`pthread_create()`](http://man7.org/linux/man-pages/man3/pthread_create.3.html): crea un hilo.
+* [`pthread_join()`](http://man7.org/linux/man-pages/man3/pthread_join.3.html): espera a que el hilo indicado finalice.
+* [`pthread_exit()`](http://man7.org/linux/man-pages/man3/pthread_exit.3.html): finaliza la ejecución de un hilo.
+
+Una vez implementada la opción de generación de hilos, se debe comparar los tiempos de ejecución de ambas opciones utilizando el comando [`time`](http://man7.org/linux/man-pages/man1/time.1.html):
+
+```sh
+$ /usr/bin/time -p bin/benchmark -p 1000
+$ /usr/bin/time -p bin/benchmark -t 1000
+```
+
+**Nota**: es importante usar el _path_ completo (`/usr/bin/time`) para no ejecutar el comando `time` provisto por el _shell_. 
+
+Responder:
+
+1. ¿Cual de las dos variantes tuvo menos costo, la creación de hilos o la creación de procesos? Justificar.
 
 ## Ejercicio 3: getppid() en xv6
 
