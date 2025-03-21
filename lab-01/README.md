@@ -49,7 +49,7 @@ En el ejemplo, luego de ingresar una frase y presionar Enter (`↵`), el program
 Utilizar la función [`getchar()`](https://www.man7.org/linux/man-pages/man3/getchar.3.html) para obtener un carácter desde la _entrada estándar_.
 
 ## Ejercicio 3
-Completar los programas `encrypt.c` y `decrypt.c` para que encripten y desencripten un mensaje respectivamente, utilizando la [técnica de esteganografía de reemplazo del bit menos significativo](https://es.wikipedia.org/wiki/Esteganograf%C3%ADa#Inserci%C3%B3n_en_el_bit_menos_significativo).
+Completar los programas `encrypt.c` y `decrypt.c` para que encripten y desencripten un mensaje respectivamente. La encriptación es muy sencilla: cada byte del mensaje debe ser precedido por 7 bytes aleatorios en el resultado encriptado.
 
 ### Llamadas al sistema a utilizar
 
@@ -58,7 +58,6 @@ Utilizar las siguientes llamadas al sistema:
 - [`open()`](http://man7.org/linux/man-pages/man2/open.2.html): abre el archivo indicado y devuelve un descriptor de archivo. 
 - [`write()`](http://man7.org/linux/man-pages/man2/write.2.html): escribe *n* bytes en el archivo indicado.
 - [`read()`](http://man7.org/linux/man-pages/man2/read.2.html): lee _n_ bytes del archivo indicado.
-- [`fstat()`](http://man7.org/linux/man-pages/man2/fstat.2.html): retorna información del archivo indicado.
 - [`close()`](http://man7.org/linux/man-pages/man2/close.2.html): cierra un archivo.
 
 También usar la siguiente función de biblioteca:
@@ -73,8 +72,6 @@ El programa `encrypt.c` debe leer el mensaje a encriptar como un argumento desde
 - Encripta "hello" y lo guarda en el archivo `mensaje.msg`: `bin/encrypt mensaje.msg "hello"`
 
 Utilizar `argv` y `argc` para determinar donde debe enviarse el resultado.
-
-Cada caracter del mensaje es almacenado en el bit menos significativo de cada byte. Por ejemplo, el mensaje "hola" requiere de 32 bytes: 4 caracteres cada uno de 8 bits (1 byte).
 
 A continuación un ejemplo de que tendría que devolver el programa al encriptar "hola" y enviarlo a la salida estándar. El programa `xxd` muestra una reprsentación hexadecimal de su entrada y lo usamos para que la salida sea más fácil de leer:
 ```

@@ -1,14 +1,23 @@
-<h1 id="laboratorio-1---el-lenguaje-de-programacion-c">Laboratorio 1 - El lenguaje de programacion C</h1>
-<p>El objetivo de este laboratorio es familiarizarse con el lenguaje C y las herramientas de desarrollo.</p>
+<h1 id="laboratorio-1---el-lenguaje-de-programacion-c">Laboratorio 1 -
+El lenguaje de programacion C</h1>
+<p>El objetivo de este laboratorio es familiarizarse con el lenguaje C y
+las herramientas de desarrollo.</p>
 <h3 id="programa-de-referencia">Programa de referencia</h3>
-<p>El programa <code>demo.c</code> demuestra las funcionalidades básicas del lenguaje C: declaración de variables, estructuras, ciclos, control, punteros e imprimir mensajes por la salida estándar haciendo uso de funciones de la biblioteca.</p>
+<p>El programa <code>demo.c</code> demuestra las funcionalidades básicas
+del lenguaje C: declaración de variables, estructuras, ciclos, control,
+punteros e imprimir mensajes por la salida estándar haciendo uso de
+funciones de la biblioteca.</p>
 <h2 id="ejercicio-1">Ejercicio 1</h2>
-<p>Completar el programa <code>sum.c</code> para que retorne la suma de los números enteros indicados desde la línea de comandos o bien desde la entrada estándar (uno o más números por línea).</p>
-<p>Por ejemplo, para sumar números indicadolos como argumentos al invocar el programa el comando sería así:</p>
+<p>Completar el programa <code>sum.c</code> para que retorne la suma de
+los números enteros indicados desde la línea de comandos o bien desde la
+entrada estándar (uno o más números por línea).</p>
+<p>Por ejemplo, para sumar números indicadolos como argumentos al
+invocar el programa el comando sería así:</p>
 <pre><code>$ bin/sum 1 2 3
-6
-</code></pre>
-<p>Para sumar números ingresados desde la entrada estándar, la ejecución sería así (<code>↵</code> representa un Enter y <code>^D</code> significa <code>Ctrl + D</code>, que ingresa un <code>EOF</code>):</p>
+6</code></pre>
+<p>Para sumar números ingresados desde la entrada estándar, la ejecución
+sería así (<code>↵</code> representa un Enter y <code>^D</code>
+significa <code>Ctrl + D</code>, que ingresa un <code>EOF</code>):</p>
 <pre><code>$ bin/sum
 1↵
 2↵
@@ -19,11 +28,13 @@ $ bin/sum
 1 2 3 4↵
 ^D
 10
-$
-</code></pre>
-<p>Utilizar la funcion <a href="https://www.man7.org/linux/man-pages/man3/atoi.3.html"><code>atoi()</code></a> para convertir las cadenas de texto a números enteros.</p>
+$</code></pre>
+<p>Utilizar la funcion <a
+href="https://www.man7.org/linux/man-pages/man3/atoi.3.html"><code>atoi()</code></a>
+para convertir las cadenas de texto a números enteros.</p>
 <h2 id="ejercicio-2">Ejercicio 2</h2>
-<p>Completar el programa <code>palabras.c</code> para que imprima las palabras que recibe desde la <em>entrada estándar</em>. Por ejemplo:</p>
+<p>Completar el programa <code>palabras.c</code> para que imprima las
+palabras que recibe desde la <em>entrada estándar</em>. Por ejemplo:</p>
 <pre><code>$ bin/palabras
 Esto es un texto ↵
 Esto
@@ -34,51 +45,81 @@ Hola mundo ↵
 Hola
 mundo
 ^C
-$
-</code></pre>
-<p>En el ejemplo, luego de ingresar una frase y presionar Enter (<code>↵</code>), el programa imprime cada palabra, una por línea. El programa finaliza al presionar <code>^C</code> (Ctrl+C).</p>
-<p>Utilizar la función <a href="https://www.man7.org/linux/man-pages/man3/getchar.3.html"><code>getchar()</code></a> para obtener un carácter desde la <em>entrada estándar</em>.</p>
+$</code></pre>
+<p>En el ejemplo, luego de ingresar una frase y presionar Enter
+(<code>↵</code>), el programa imprime cada palabra, una por línea. El
+programa finaliza al presionar <code>^C</code> (Ctrl+C).</p>
+<p>Utilizar la función <a
+href="https://www.man7.org/linux/man-pages/man3/getchar.3.html"><code>getchar()</code></a>
+para obtener un carácter desde la <em>entrada estándar</em>.</p>
 <h2 id="ejercicio-3">Ejercicio 3</h2>
-<p>Completar los programas <code>encrypt.c</code> y <code>decrypt.c</code> para que encripten y desencripten un mensaje respectivamente, utilizando la <a href="https://es.wikipedia.org/wiki/Esteganograf%C3%ADa#Inserci%C3%B3n_en_el_bit_menos_significativo">técnica de esteganografía de reemplazo del bit menos significativo</a>.</p>
-<h3 id="llamadas-al-sistema-a-utilizar">Llamadas al sistema a utilizar</h3>
+<p>Completar los programas <code>encrypt.c</code> y
+<code>decrypt.c</code> para que encripten y desencripten un mensaje
+respectivamente. La encriptación es muy sencilla: cada byte del mensaje
+debe ser precedido por 7 bytes aleatorios en el resultado
+encriptado.</p>
+<h3 id="llamadas-al-sistema-a-utilizar">Llamadas al sistema a
+utilizar</h3>
 <p>Utilizar las siguientes llamadas al sistema:</p>
 <ul>
-<li><a href="http://man7.org/linux/man-pages/man2/open.2.html"><code>open()</code></a>: abre el archivo indicado y devuelve un descriptor de archivo.</li>
-<li><a href="http://man7.org/linux/man-pages/man2/write.2.html"><code>write()</code></a>: escribe <em>n</em> bytes en el archivo indicado.</li>
-<li><a href="http://man7.org/linux/man-pages/man2/read.2.html"><code>read()</code></a>: lee <em>n</em> bytes del archivo indicado.</li>
-<li><a href="http://man7.org/linux/man-pages/man2/fstat.2.html"><code>fstat()</code></a>: retorna información del archivo indicado.</li>
-<li><a href="http://man7.org/linux/man-pages/man2/close.2.html"><code>close()</code></a>: cierra un archivo.</li>
+<li><a
+href="http://man7.org/linux/man-pages/man2/open.2.html"><code>open()</code></a>:
+abre el archivo indicado y devuelve un descriptor de archivo.</li>
+<li><a
+href="http://man7.org/linux/man-pages/man2/write.2.html"><code>write()</code></a>:
+escribe <em>n</em> bytes en el archivo indicado.</li>
+<li><a
+href="http://man7.org/linux/man-pages/man2/read.2.html"><code>read()</code></a>:
+lee <em>n</em> bytes del archivo indicado.</li>
+<li><a
+href="http://man7.org/linux/man-pages/man2/close.2.html"><code>close()</code></a>:
+cierra un archivo.</li>
 </ul>
 <p>También usar la siguiente función de biblioteca:</p>
 <ul>
-<li><a href="https://www.man7.org/linux/man-pages/man3/rand.3.html"><code>rand()</code></a>: retorna un número pseudo-aleatorio.</li>
-<li><a href="https://www.man7.org/linux/man-pages/man3/rand.3.html"><code>srand()</code></a>: inicializa semilla para generación de números pseudo-aleatorios.</li>
+<li><a
+href="https://www.man7.org/linux/man-pages/man3/rand.3.html"><code>rand()</code></a>:
+retorna un número pseudo-aleatorio.</li>
+<li><a
+href="https://www.man7.org/linux/man-pages/man3/rand.3.html"><code>srand()</code></a>:
+inicializa semilla para generación de números pseudo-aleatorios.</li>
 </ul>
 <h3 id="encriptador">Encriptador</h3>
-<p>El programa <code>encrypt.c</code> debe leer el mensaje a encriptar como un argumento desde la línea de comando o desde la <em>entrada estándar</em> y generar el contenido encriptado en la <em>salida estándar</em> o bien guardarlo en el archivo indicado antes del mensaje:</p>
+<p>El programa <code>encrypt.c</code> debe leer el mensaje a encriptar
+como un argumento desde la línea de comando o desde la <em>entrada
+estándar</em> y generar el contenido encriptado en la <em>salida
+estándar</em> o bien guardarlo en el archivo indicado antes del
+mensaje:</p>
 <ul>
-<li>Encripta "hola" y lo imprime por la salida estándar: <code>bin/encrypt "hola"</code></li>
-<li>Encripta "hello" y lo guarda en el archivo <code>mensaje.msg</code>: <code>bin/encrypt mensaje.msg "hello"</code></li>
+<li>Encripta "hola" y lo imprime por la salida estándar:
+<code>bin/encrypt "hola"</code></li>
+<li>Encripta "hello" y lo guarda en el archivo <code>mensaje.msg</code>:
+<code>bin/encrypt mensaje.msg "hello"</code></li>
 </ul>
-<p>Utilizar <code>argv</code> y <code>argc</code> para determinar donde debe enviarse el resultado.</p>
-<p>Cada caracter del mensaje es almacenado en el bit menos significativo de cada byte. Por ejemplo, el mensaje "hola" requiere de 32 bytes: 4 caracteres cada uno de 8 bits (1 byte).</p>
-<p>A continuación un ejemplo de que tendría que devolver el programa al encriptar "hola" y enviarlo a la salida estándar. El programa <code>xxd</code> muestra una reprsentación hexadecimal de su entrada y lo usamos para que la salida sea más fácil de leer:</p>
+<p>Utilizar <code>argv</code> y <code>argc</code> para determinar donde
+debe enviarse el resultado.</p>
+<p>A continuación un ejemplo de que tendría que devolver el programa al
+encriptar "hola" y enviarlo a la salida estándar. El programa
+<code>xxd</code> muestra una reprsentación hexadecimal de su entrada y
+lo usamos para que la salida sea más fácil de leer:</p>
 <pre><code>$ bin/encrypt &quot;hola&quot; | xxd
 00000000: 2b07 7d09 250e 5e68 5c17 2b2c 0c17 5b6f  +.}.%.^h\.+,..[o
-00000010: 1829 0100 5f26 186c 247d 1f15 087b 4061  .).._&amp;.l$}...{@a
-</code></pre>
+00000010: 1829 0100 5f26 186c 247d 1f15 087b 4061  .).._&amp;.l$}...{@a</code></pre>
 <h3 id="desencriptador">Desencriptador</h3>
-<p>El programa <code>decrypt.c</code> debe leer los datos encriptados desde la entrada estándar o desde el archivo indicado como argumento. El mensaje oculto es presentado en la <em>salida estándar</em>. El tamaño del archivo encriptado (o el número de bytes leído de la entrada estándar) indica la longitud del mensaje oculto.</p>
+<p>El programa <code>decrypt.c</code> debe leer los datos encriptados
+desde la entrada estándar o desde el archivo indicado como argumento. El
+mensaje oculto es presentado en la <em>salida estándar</em>. El tamaño
+del archivo encriptado (o el número de bytes leído de la entrada
+estándar) indica la longitud del mensaje oculto.</p>
 <h3 id="ejecución">Ejecución</h3>
-<p>Dado que ambos programan pueden leer y escribir de la entrada estándar, tendrían que poder ejecutar un comando como el siguiente:</p>
+<p>Dado que ambos programan pueden leer y escribir de la entrada
+estándar, tendrían que poder ejecutar un comando como el siguiente:</p>
 <pre><code>$ bin/encrypt &quot;hola&quot; | bin/decrypt
 hola
-$
-</code></pre>
+$</code></pre>
 <p>O incluso así, pasando el mensaje desde la entrada estándar:</p>
 <pre><code>$ echo -n &quot;hola&quot; | bin/encrypt | bin/decrypt
 hola
-$
-</code></pre>
+$</code></pre>
 <hr />
 <p>¡Fín del Laboratorio 1!</p>
